@@ -1,0 +1,35 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: lagou-user
+          uri: lb://lagou-service-user/
+          predicates:
+            - Path=/api/user/**
+        - id: lagou-code
+          uri: lb://lagou-service-code/
+          predicates:
+            - Path=/api/code/**
+        - id: lagou-email
+          uri: lb://lagou-service-email/
+          predicates:
+            - Path=/api/email/**
+  redis:
+    host: 127.0.0.1
+    port: 6379
+lagou:
+  cloud:
+    exclude:
+      urls:
+        - /api/user/register/
+        - /api/user/login/
+        - /api/user/isRegistered/
+        - /api/code/create/
+    ip-black:
+      interfacePaths:
+        - interfacePath: /api/user/register/
+          time: 60
+          count: 10
+        - interfacePath: /api/user/login/
+          time: 60
+          count: 6
